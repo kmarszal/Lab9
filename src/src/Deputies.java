@@ -1,13 +1,12 @@
 package src;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 public class Deputies {
-	private List<Deputy> deputies;
+	private LinkedList<Deputy> deputies;
 	
 	public Deputies() {
-		deputies = new ArrayList<>();
+		deputies = new LinkedList<>();
 	}
 	
 	public void addDeputy(Deputy deputy)
@@ -15,18 +14,10 @@ public class Deputies {
 		deputies.add(deputy);
 	}
 	
-	public Deputy getDeputyWithID(int id)
-	{
-		if(deputies.size()-1>id)
+	public void print() {
+		for(Deputy deputy : deputies)
 		{
-			Deputy deputy = deputies.get(id);
-			return deputy;
+			System.out.println(deputy.toString());
 		}
-		else
-		{
-			System.out.println("Brak id w liście");
-			return null;
-		}
-		
 	}
 }

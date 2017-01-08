@@ -1,31 +1,41 @@
 package src;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Main {
-	
+
 	public static void main(String[] args) {
-	/*
-		try (BufferedReader br = new BufferedReader(new FileReader("D:/a"))) {
-			StringBuilder sb = new StringBuilder();
-			String line = new String();
-			line = br.readLine();
-			while (line != null) {
-				sb.append(line);
-				line = br.readLine();
+		try {
+			UserOptions uo = ArgumentsParser.Parse(args);
+			JSONDownloader.downloadAll(uo.getCadency());
+			JSONDeputyList deputies = new JSONDeputyList(uo);
+			
+			switch (uo.getOptions()) {
+			case wydatki:
+				if (uo.getSurname() != null) {
+					System.out.println(JSONDeputyList.getExpenses(uo));
+				} else {
+					System.out.println(deputies.getAverageExpenses());
+				}
+				break;
+			case najdluzszePodroze:
+				System.out.println(deputies.getLongestTravelTime());
+				break;
+			case najdrozszaPodroz:
+				System.out.println(deputies.getMostExpensiveTravel());
+				break;
+			case najwiecejPodrozy:
+				System.out.println(deputies.getMostTravels());
+				break;
+			case naprawy:
+				System.out.println(JSONDeputyList.getRepairExpenses(uo));
+				break;
+			case wlochy:
+				deputies.getItalyVisitors().print();
+				break;
+			default:
+				break;
 			}
-			line = sb.toString();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IllegalArgumentException ex) {
+			System.out.println(ex);
 		}
-		JSONObject ob = new JSONObject();*/
 	}
 }

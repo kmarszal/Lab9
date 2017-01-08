@@ -4,50 +4,81 @@ public class UserOptions {
 	private int kadencja;
 	private String imie;
 	private String nazwisko;
-	private boolean remonty;
-	private boolean podroze;
-	private boolean wlochy;
+	private Options opcja;
 	
-	public UserOptions(int kadencja, String imie, String nazwisko, boolean remonty, boolean podroze, boolean wlochy) {
-		super();
-		this.kadencja = kadencja;
-		this.imie = imie;
-		this.nazwisko = nazwisko;
-		this.remonty = remonty;
-		this.podroze = podroze;
-		this.wlochy = wlochy;
+	public UserOptions(int cadency, String name, String surname, Options option) {
+		if(cadency!=7 && cadency !=8) this.kadencja = 78;
+		else this.kadencja = cadency;
+		this.imie = name;
+		this.imie = format(this.imie);
+		this.nazwisko = surname;
+		this.nazwisko = format(this.nazwisko);
+		this.opcja = option;
 	}
 	
-	public int getKadencja() {
+	public int getCadency() {
 		return kadencja;
 	}
-	public String getImie() {
+	public String getName() {
 		return imie;
 	}
-	public String getNazwisko() {
+	public String getSurname() {
 		return nazwisko;
 	}
-	public boolean isRemonty() {
-		return remonty;
+	public Options getOptions() {
+		return opcja;
 	}
-	public boolean isPodroze() {
-		return podroze;
+
+	@Override
+	public String toString() {
+		return "UserOptions [kadencja=" + kadencja + ", imie=" + imie + ", nazwisko=" + nazwisko + ", opcja=" + opcja
+				+ "]";
 	}
-	public boolean isWlochy() {
-		return wlochy;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserOptions other = (UserOptions) obj;
+		if (imie == null) {
+			if (other.imie != null)
+				return false;
+		} else if (!imie.equals(other.imie))
+			return false;
+		if (kadencja != other.kadencja)
+			return false;
+		if (nazwisko == null) {
+			if (other.nazwisko != null)
+				return false;
+		} else if (!nazwisko.equals(other.nazwisko))
+			return false;
+		if (opcja != other.opcja)
+			return false;
+		return true;
 	}
-	
-	
-	
+
+	public String format(String str)
+	{
+		if(str!=null)
+		{
+			str = str.toLowerCase();
+			String head = str.substring(0, 1);
+			String tail = str.substring(1);
+			head = head.toUpperCase();
+			tail = tail.toLowerCase();
+			if(tail.contains("-"))
+			{
+				String head1 = tail.substring(0,tail.indexOf('-'));
+				String tail1 = tail.substring(tail.indexOf('-') + 1);
+				tail1 = "-" + tail1.substring(0,1).toUpperCase() + tail1.substring(1);
+				tail = head1+tail1;
+			}
+			return (head + tail);
+		}
+		else return str;
+	}
 }
-
-
-/*
-suma wydatków posła/posłanki o określonym imieniu i nazwisku
-wysokości wydatków na 'drobne naprawy i remonty biura poselskiego' określonego posła/posłanki
-średniej wartości sumy wydatków wszystkich posłów
-posła/posłanki, który wykonał najwięcej podróży zagranicznych
-posła/posłanki, który najdłużej przebywał za granicą
-posła/posłanki, który odbył najdroższą podróż zagraniczną
-listę wszystkich posłów, którzy odwiedzili Włochy
-*/
