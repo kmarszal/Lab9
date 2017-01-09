@@ -161,9 +161,9 @@ public class JSONDeputyList {
 	public Deputy getLongestTravelTime()
 	{
 		Deputy max = new Deputy("","",0);
+		int maxdays = 0;
 		for(JSONObject deputy : deputies)
 		{
-			int maxdays = 0;
 			int days;
 			Object owyjazdy = deputy.getJSONObject("layers").get("wyjazdy");
 			if(owyjazdy instanceof JSONArray)
@@ -179,6 +179,7 @@ public class JSONDeputyList {
 				}
 			}
 		}
+		System.out.println(maxdays);
 		return max;
 	}
 	
