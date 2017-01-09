@@ -48,33 +48,6 @@ public class JSONDeputyList {
 	public Deputies getItalyVisitors()
 	{
 		Deputies deputylist = new Deputies();
-		if(cadency == 7)
-			for(JSONObject deputy : deputies)
-			{
-				Object owyjazdy = deputy.getJSONObject("layers").get("wyjazdy");
-				if(owyjazdy instanceof JSONArray)
-				{
-					if(((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).filter(x -> Integer.parseInt(x.get("od").substring(0, 4)) <=2015).map(x -> x.get("country_code")).anyMatch(x -> x.equals("IT")))
-					{
-						Deputy dep = new Deputy(deputy.getJSONObject("data").getString("poslowie.imie_pierwsze"),deputy.getJSONObject("data").getString("poslowie.nazwisko"),deputy.getJSONObject("data").getInt("poslowie.id"));
-						deputylist.addDeputy(dep);
-					}
-				}
-			}
-		else if(cadency == 8)
-			for(JSONObject deputy : deputies)
-			{
-				Object owyjazdy = deputy.getJSONObject("layers").get("wyjazdy");
-				if(owyjazdy instanceof JSONArray)
-				{
-					if(((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).filter(x -> Integer.parseInt(x.get("od").substring(0, 4)) >=2015).map(x -> x.get("country_code")).anyMatch(x -> x.equals("IT")))
-					{
-						Deputy dep = new Deputy(deputy.getJSONObject("data").getString("poslowie.imie_pierwsze"),deputy.getJSONObject("data").getString("poslowie.nazwisko"),deputy.getJSONObject("data").getInt("poslowie.id"));
-						deputylist.addDeputy(dep);
-					}
-				}
-			}
-		else
 			for(JSONObject deputy : deputies)
 			{
 				Object owyjazdy = deputy.getJSONObject("layers").get("wyjazdy");
@@ -94,33 +67,6 @@ public class JSONDeputyList {
 	{
 		Deputy max = new Deputy("","",0);
 		long maxtravels = 0;
-		if(this.cadency==7)
-		for(JSONObject deputy : deputies)
-		{
-			Object owyjazdy = deputy.getJSONObject("layers").get("wyjazdy");
-			if(owyjazdy instanceof JSONArray)
-			{
-				long travels = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).filter(x -> Integer.parseInt(x.get("od").substring(0, 4)) <=2015).count();
-				if(maxtravels < travels) {
-					maxtravels = travels;
-					max = new Deputy(deputy.getJSONObject("data").getString("poslowie.imie_pierwsze"),deputy.getJSONObject("data").getString("poslowie.nazwisko"),deputy.getJSONObject("data").getInt("poslowie.id"));
-				}
-			}
-		}
-		else if(this.cadency==8)
-			for(JSONObject deputy : deputies)
-			{
-				Object owyjazdy = deputy.getJSONObject("layers").get("wyjazdy");
-				if(owyjazdy instanceof JSONArray)
-				{
-					long travels = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).filter(x -> Integer.parseInt(x.get("od").substring(0, 4)) >=2015).count();
-					if(maxtravels < travels) {
-						maxtravels = travels;
-						max = new Deputy(deputy.getJSONObject("data").getString("poslowie.imie_pierwsze"),deputy.getJSONObject("data").getString("poslowie.nazwisko"),deputy.getJSONObject("data").getInt("poslowie.id"));
-					}
-				}
-			}
-		else
 			for(JSONObject deputy : deputies)
 			{
 				Object owyjazdy = deputy.getJSONObject("layers").get("wyjazdy");
@@ -146,9 +92,7 @@ public class JSONDeputyList {
 			if(owyjazdy instanceof JSONArray)
 			{
 				Optional<Double> expense;
-				if(this.cadency==7) expense = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).filter(x -> Integer.parseInt(x.get("od").substring(0, 4)) >=2015).map(x -> x.get("koszt_suma")).map(x -> Double.parseDouble(x)).max((Double x,Double y) -> x.compareTo(y));
-				else if(this.cadency==8) expense = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).filter(x -> Integer.parseInt(x.get("od").substring(0, 4)) <=2015).map(x -> x.get("koszt_suma")).map(x -> Double.parseDouble(x)).max((Double x,Double y) -> x.compareTo(y));
-				else expense = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).map(x -> x.get("koszt_suma")).map(x -> Double.parseDouble(x)).max((Double x,Double y) -> x.compareTo(y));
+				expense = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).map(x -> x.get("koszt_suma")).map(x -> Double.parseDouble(x)).max((Double x,Double y) -> x.compareTo(y));
 				if(maxexpense < expense.get()) {
 					maxexpense = expense.get();
 					max = new Deputy(deputy.getJSONObject("data").getString("poslowie.imie_pierwsze"),deputy.getJSONObject("data").getString("poslowie.nazwisko"),deputy.getJSONObject("data").getInt("poslowie.id"));
@@ -168,11 +112,7 @@ public class JSONDeputyList {
 			Object owyjazdy = deputy.getJSONObject("layers").get("wyjazdy");
 			if(owyjazdy instanceof JSONArray)
 			{
-				if(this.cadency==8)
-				days = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).filter(x -> Integer.parseInt(x.get("od").substring(0, 4)) >=2015).map(x -> x.get("liczba_dni")).map(x -> Integer.parseInt(x)).reduce(0, (x,y) -> x + y);
-				else if(this.cadency==7)
-				days = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).filter(x -> Integer.parseInt(x.get("od").substring(0, 4)) <=2015).map(x -> x.get("liczba_dni")).map(x -> Integer.parseInt(x)).reduce(0, (x,y) -> x + y);
-				else days = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).map(x -> x.get("liczba_dni")).map(x -> Integer.parseInt(x)).reduce(0, (x,y) -> x + y);
+				days = ((JSONArray) owyjazdy).toList().stream().map(x -> (HashMap<String,String>) x).map(x -> x.get("liczba_dni")).map(x -> Integer.parseInt(x)).reduce(0, (x,y) -> x + y);
 				if(maxdays < days) {
 					maxdays = days;
 					max = new Deputy(deputy.getJSONObject("data").getString("poslowie.imie_pierwsze"),deputy.getJSONObject("data").getString("poslowie.nazwisko"),deputy.getJSONObject("data").getInt("poslowie.id"));
