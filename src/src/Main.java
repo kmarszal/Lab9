@@ -17,13 +17,19 @@ public class Main {
 				}
 				break;
 			case najdluzszePodroze:
-				System.out.println(deputies.getLongestTravelTime());
+				Deputy d = deputies.getLongestTravelTime();
+				if(d.getId()==0) System.out.println("brak danych");
+				else System.out.println(d);
 				break;
 			case najdrozszaPodroz:
-				System.out.println(deputies.getMostExpensiveTravel());
+				Deputy de = deputies.getMostExpensiveTravel();
+				if(de.getId()==0) System.out.println("brak danych");
+				else System.out.println(de);
 				break;
 			case najwiecejPodrozy:
-				System.out.println(deputies.getMostTravels());
+				Deputy dep = deputies.getMostTravels();
+				if(dep.getId()==0) System.out.println("brak danych");
+				else System.out.println(dep);
 				break;
 			case naprawy:
 				System.out.println(JSONDeputyList.getRepairExpenses(uo));
